@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 OkHttpClient okHttpClient = new OkHttpClient();
-                //2.创建Request对象，设置一个url地址（百度地址）,设置请求方式。
+                //2.创建Request对象，设置一个url地址,设置请求方式。
                 Request request = new Request.Builder().url(dataManagers.getTOUTIAO_SEARCHurl()).method("GET",null).build();
                 //3.创建一个call对象,参数就是Request请求对象
                 Call call = okHttpClient.newCall(request);
