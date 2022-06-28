@@ -23,7 +23,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
 
-    OkHttpClient okHttpClient;
+
     private TextView textView;
     private Button button;
 
@@ -40,21 +40,54 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Date date = new Date();
-                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                //获取当前时间
-                String today = formatter.format(date) + ".json";
+                DataManagers dataManagers = new DataManagers();
 
 
-                String url = DataManagers.TOUTIAO_SEARCH + today;
-                Log.i("TAG",url);
+
+
+                OkHttpClient okHttpClient = new OkHttpClient();
+                //2.创建Request对象，设置一个url地址（百度地址）,设置请求方式。
+                Request request = new Request.Builder().url(dataManagers.getTOUTIAO_SEARCHurl()).method("GET",null).build();
+                //3.创建一个call对象,参数就是Request请求对象
+                Call call = okHttpClient.newCall(request);
+
+                call.enqueue(new Callback() {
+                    @Override
+                    public void onFailure(@NonNull Call call, @NonNull IOException e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                        String data = response.body().string();
+                        Log.d("response",data);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                textView.setText(data);
+                            }
+                        });
+
+                    }
+                });
+
+
+
+
+
+
 
 
 
             }
         });
     }
+
+
+
+
+
 
     private void initView() {
         textView = (TextView) findViewById(R.id.textView);
